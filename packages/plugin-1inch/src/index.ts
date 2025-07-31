@@ -1,44 +1,32 @@
+// packages/plugin-1inch/src/index.ts
 import type { Plugin } from "@elizaos/core";
-import { walletProvider, getClient } from "./provider";
-import { getAgentKitActions } from "./actions";
+import { OneInchProvider } from "./provider";
+import { 
+  getQuoteAction, 
+  createOrderAction, 
+  getActiveOrdersAction,
+  getOrdersByMakerAction 
+} from "./actions";
 
-// Initial banner
-console.log("\n┌════════════════════════════════════════┐");
-console.log("│          AGENTKIT PLUGIN               │");
-console.log("├────────────────────────────────────────┤");
-console.log("│  Initializing AgentKit Plugin...       │");
-console.log("│  Version: 0.0.1                        │");
-console.log("└════════════════════════════════════════┘");
-
-const initializeActions = async () => {
-    try {
-        // Validate environment variables
-        const apiKeyName = process.env.CDP_API_KEY_NAME;
-        const apiKeyPrivateKey = process.env.CDP_API_KEY_PRIVATE_KEY;
-
-        if (!apiKeyName || !apiKeyPrivateKey) {
-            console.warn("⚠️ Missing CDP API credentials - AgentKit actions will not be available");
-            return [];
-        }
-
-        const actions = await getAgentKitActions({
-            getClient,
-        });
-        console.log("✔ AgentKit actions initialized successfully.");
-        return actions;
-    } catch (error) {
-        console.error("❌ Failed to initialize AgentKit actions:", error);
-        return []; // Return empty array instead of failing
-    }
+export const oneInchPlugin: Plugin = {
+  name: "1inch",
+  description: "Plugin for 1inch cross-chain swaps and order management",
+  actions: [
+    getQuoteAction,
+    createOrderAction,
+    getActiveOrdersAction,
+    getOrdersByMakerAction,
+  ],
+  evaluators: [],
+  providers: [OneInchProvider],
+  services: [],
 };
 
-export const agentKitPlugin: Plugin = {
-    name: "[AgentKit] Integration",
-    description: "AgentKit integration plugin",
-    providers: [walletProvider],
-    evaluators: [],
-    services: [],
-    actions: await initializeActions(),
-};
+export default oneInchPlugin;
 
-export default agentKitPlugin;
+// Re-export types and utilities
+export * from "./provider";
+export * from "./actions";
+
+// Export NetworkEnum for convenience
+export { NetworkEnum } from "@1inch/cross-chain-sdk";

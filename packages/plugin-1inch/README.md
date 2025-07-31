@@ -1,6 +1,6 @@
-# @elizaos/plugin-agentkit
+# @elizaos/plugin-1inch
 
-AgentKit plugin for Eliza that enables interaction with CDP AgentKit tools for NFT and token management.
+1inch cross-chain swap plugin for Eliza that enables cross-chain token swaps and order management.
 
 ## Setup
 
@@ -13,66 +13,60 @@ pnpm install
 2. Configure environment variables:
 
 ```env
-CDP_API_KEY_NAME=your_key_name
-CDP_API_KEY_PRIVATE_KEY=your_private_key
-CDP_AGENT_KIT_NETWORK=base-sepolia # Optional: Defaults to base-sepolia
+ONEINCH_AUTH_KEY=your_1inch_api_key
+ONEINCH_BASE_URL=https://api.1inch.dev/fusion-plus # Optional
+ONEINCH_WALLET_ADDRESS=your_wallet_address # Optional
+ONEINCH_PRIVATE_KEY=your_private_key # Optional
 ```
 
 3. Add the plugin to your character configuration:
 
 ```json
 {
-    "plugins": ["@elizaos/plugin-agentkit"],
+    "plugins": ["@elizaos/plugin-1inch"],
     "settings": {
         "secrets": {
-            "CDP_API_KEY_NAME": "your_key_name",
-            "CDP_API_KEY_PRIVATE_KEY": "your_private_key"
+            "ONEINCH_AUTH_KEY": "your_1inch_api_key",
+            "ONEINCH_WALLET_ADDRESS": "your_wallet_address",
+            "ONEINCH_PRIVATE_KEY": "your_private_key"
         }
     }
 }
 ```
 
-## Available Tools
+## Available Actions
 
-The plugin provides access to the following CDP AgentKit tools:
+The plugin provides the following actions:
 
--   `GET_WALLET_DETAILS`: Get wallet information
--   `DEPLOY_NFT`: Deploy a new NFT collection
--   `DEPLOY_TOKEN`: Deploy a new token
--   `GET_BALANCE`: Check token or NFT balance
--   `MINT_NFT`: Mint NFTs from a collection
--   `REGISTER_BASENAME`: Register a basename for NFTs
--   `REQUEST_FAUCET_FUNDS`: Request testnet funds
--   `TRADE`: Execute trades
--   `TRANSFER`: Transfer tokens or NFTs
--   `WOW_BUY_TOKEN`: Buy WOW tokens
--   `WOW_SELL_TOKEN`: Sell WOW tokens
--   `WOW_CREATE_TOKEN`: Create new WOW tokens
+-   `GET_QUOTE`: Get a quote for cross-chain token swap
+-   `CREATE_ORDER`: Create a cross-chain swap order
+-   `GET_ACTIVE_ORDERS`: Get active orders
+-   `GET_ORDERS_BY_MAKER`: Get orders by maker address
 
 ## Usage Examples
 
-1. Get wallet details:
+1. Get a quote:
 
 ```
-Can you show me my wallet details?
+Get me a quote to swap 1000 DAI from Ethereum to native token on Gnosis chain
 ```
 
-2. Deploy an NFT collection:
+2. Create an order:
 
 ```
-Deploy a new NFT collection called "Music NFTs" with symbol "MUSIC"
+Create an order to swap 1000 DAI from Ethereum to USDC on Polygon
 ```
 
-3. Create a token:
+3. Check active orders:
 
 ```
-Create a new WOW token called "Artist Token" with symbol "ART"
+Show me my active orders
 ```
 
-4. Check balance:
+4. Get orders by address:
 
 ```
-What's my current balance?
+Get orders for address 0xfa80cd9b3becc0b4403b0f421384724f2810775f
 ```
 
 ## Development
@@ -92,30 +86,25 @@ pnpm dev
 ## Dependencies
 
 -   @elizaos/core
--   @coinbase/cdp-agentkit-core
--   @coinbase/cdp-langchain
--   @langchain/core
+-   @1inch/cross-chain-sdk
+-   web3
+-   zod
 
-## Network Support
+## Supported Networks
 
-The plugin supports the following networks:
-
--   Base Sepolia (default)
--   Base Mainnet
-
-Configure the network using the `CDP_AGENT_KIT_NETWORK` environment variable.
+The plugin supports all networks available in the 1inch Cross-Chain SDK.
 
 ## Troubleshooting
 
-1. If tools are not being triggered:
+1. If actions are not being triggered:
 
-    - Verify CDP API key configuration
+    - Verify 1inch API key configuration
     - Check network settings
     - Ensure character configuration includes the plugin
 
 2. Common errors:
     - "Cannot find package": Make sure dependencies are installed
-    - "API key not found": Check environment variables
+    - "API key not found": Check ONEINCH_AUTH_KEY environment variable
     - "Network error": Verify network configuration
 
 ## License
